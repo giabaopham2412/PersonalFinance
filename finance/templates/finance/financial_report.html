@@ -1,0 +1,241 @@
+{% extends 'finance/base_generic.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Báo Cáo Tài Chính</h2>
+
+    
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Báo Cáo Tài Chính</h2>
+
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <h4>Bảng Thu Nhập</h4>
+                <form method="POST">
+                    {% csrf_token %}
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Nguồn</th>
+                                <th>Số Tiền (VND)</th>
+                                <th>Ngày</th>
+                                <th>Hành Động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for income in incomes %}
+                            <tr>
+                                <td>{{ income.source }}</td>
+                                <td>{{ income.amount }}</td>
+                                <td>{{ income.date|date:"d/m/Y" }}</td>
+                                <td>
+                                    <a href="{% url 'delete_income' income.id %}" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa khoản thu nhập này?')">Xóa</a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4">Không có dữ liệu thu nhập.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+
+            <div class="col-md-6">
+                <h4>Bảng Chi Tiêu</h4>
+                <form method="POST">
+                    {% csrf_token %}
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Danh Mục</th>
+                                <th>Số Tiền (VND)</th>
+                                <th>Ngày</th>
+                                <th>Hành Động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for expense in expenses %}
+                            <tr>
+                                <td>{{ expense.get_category_display }}</td>
+                                <td>{{ expense.amount }}</td>
+                                <td>{{ expense.date|date:"d/m/Y" }}</td>
+                                <td>
+                                    <a href="{% url 'delete_expense' expense.id %}" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa khoản chi tiêu này?')">Xóa</a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4">Không có dữ liệu chi tiêu.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="row mt-4">
+        <div class="col-md-6 text-center">
+            <h5>Biểu Đồ Thu Nhập Theo Tháng</h5>
+            <canvas id="incomeBarChart" width="800" height="400"></canvas>
+        </div>
+        <div class="col-md-6 text-center">
+            <h5>Biểu Đồ Chi Tiêu Theo Tháng</h5>
+            <canvas id="expenseBarChart" width="800" height="400"></canvas>
+        </div>
+    </div>
+
+    
+    <div class="row mt-4">
+        <div class="col-md-6 text-center">
+            <h5>Phân Loại Thu Nhập</h5>
+            <canvas id="incomePieChart" width="200" height="200"></canvas>
+        </div>
+        <div class="col-md-6 text-center">
+            <h5>Phân Loại Chi Tiêu</h5>
+            <canvas id="expensePieChart" width="200" height="200"></canvas>
+        </div>
+    </div>
+
+   <!-- Thêm Chart.js -->
+   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    
+   <script>
+
+       // Lấy dữ liệu từ context trong view 
+       const months = JSON.parse('{{ months|escapejs }}');  // Danh sách tháng
+       const incomeValues = JSON.parse('{{ income_values|escapejs }}');  // Thu nhập theo tháng
+       const expenseValues = JSON.parse('{{ expense_values|escapejs }}');  // Chi tiêu theo tháng
+
+       const incomeCategories = JSON.parse('{{ income_categories|escapejs }}');
+       const incomeTotals = JSON.parse('{{ income_totals|escapejs }}');
+       const expenseCategories = JSON.parse('{{ expense_categories|escapejs }}');
+       const expenseTotals = JSON.parse('{{ expense_totals|escapejs }}');
+
+       // Hàm tạo màu ngẫu nhiên cho các mục
+       function generateRandomColors(count) {
+           const colors = [];
+           for (let i = 0; i < count; i++) {
+               const r = Math.floor(Math.random() * 255);
+               const g = Math.floor(Math.random() * 255);
+               const b = Math.floor(Math.random() * 255);
+               colors.push(`rgba(${r}, ${g}, ${b}, 0.6)`); 
+           }
+           return colors;
+       }
+
+       // Vẽ Biểu Đồ Cột Thu Nhập
+       const incomeBarCtx = document.getElementById('incomeBarChart').getContext('2d');
+       new Chart(incomeBarCtx, {
+           type: 'bar',
+           data: {
+               labels: months,
+               datasets: [{
+                   label: 'Thu Nhập',
+                   data: incomeValues,
+                   backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                   borderColor: 'rgba(75, 192, 192, 1)',
+                   borderWidth: 1,
+               }]
+           },
+           options: {
+               responsive: true,
+               scales: {
+                   y: {
+                       beginAtZero: true,
+                       title: {
+                           display: true,
+                           text: 'Số Tiền (VND)',
+                       }
+                   }
+               }
+           }
+       });
+
+       // Vẽ Biểu Đồ Cột Chi Tiêu
+       const expenseBarCtx = document.getElementById('expenseBarChart').getContext('2d');
+       new Chart(expenseBarCtx, {
+           type: 'bar',
+           data: {
+               labels: months,
+               datasets: [{
+                   label: 'Chi Tiêu',
+                   data: expenseValues,
+                   backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                   borderColor: 'rgba(255, 99, 132, 1)',
+                   borderWidth: 1,
+               }]
+           },
+           options: {
+               responsive: true,
+               scales: {
+                   y: {
+                       beginAtZero: true,
+                       title: {
+                           display: true,
+                           text: 'Số Tiền (VND)',
+}
+                   }
+               }
+           }
+       });
+
+       // Vẽ Biểu Đồ Tròn Thu Nhập
+       const incomePieCtx = document.getElementById('incomePieChart').getContext('2d');
+       new Chart(incomePieCtx, {
+           type: 'pie',
+           data: {
+               labels: incomeCategories,
+               datasets: [{
+                   data: incomeTotals,
+                   backgroundColor: generateRandomColors(incomeCategories.length),
+                   borderColor: incomeCategories.map(color => color.replace('0.6', '1')),
+               }]
+           },
+           options: {
+               responsive: true,
+               plugins: {
+                   legend: {
+                       position: 'top',
+                   },
+                   tooltip: {
+                       enabled: true,
+                   },
+               },
+           }
+       });
+
+       // Vẽ Biểu Đồ Tròn Chi Tiêu
+       const expensePieCtx = document.getElementById('expensePieChart').getContext('2d');
+       new Chart(expensePieCtx, {
+           type: 'pie',
+           data: {
+               labels: expenseCategories,
+               datasets: [{
+                   data: expenseTotals,
+                   backgroundColor: generateRandomColors(expenseCategories.length),
+                   borderColor: expenseCategories.map(color => color.replace('0.6', '1')),
+               }]
+           },
+           options: {
+               responsive: true,
+               plugins: {
+                   legend: {
+                       position: 'top',
+                   },
+                   tooltip: {
+                       enabled: true,
+                   },
+               },
+           }
+       });
+   </script>
+
+{% endblock %}
+
+        

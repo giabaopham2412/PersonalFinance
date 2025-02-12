@@ -1,0 +1,33 @@
+<link href="/static/add_income/style.css" rel="stylesheet">
+{% extends 'finance/base_generic.html' %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-start mt-5">
+    <div class="card p-4" style="max-width: 600px; width: 100%;">
+        <h2 class="text-center mb-4">Add Income</h2>
+        <form method="post">
+            {% csrf_token %}
+
+            <!-- Dòng Số Tiền -->
+            <div class="mb-3">
+                <label for="id_amount" class="form-label">Amount (VND):</label>
+                {{ form.amount }}
+            </div>
+
+            <!-- Dòng Nguồn Thu Nhập -->
+            <div class="mb-3">
+                <label for="id_source" class="form-label">Source:</label>
+                {{ form.source }}
+            </div>
+
+            <!-- Dòng Ngày -->
+            <div class="mb-3">
+                <label for="id_date" class="form-label">Date:</label>
+                {{ form.date }}
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Add</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
