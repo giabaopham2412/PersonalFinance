@@ -1,0 +1,15 @@
+{% extends 'finance/base_generic.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Tạo Mới Danh Mục Chi Tiêu</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="id_name" class="form-label">Danh Mục:</label>
+            {{ form.name }}
+        </div>
+        <button type="submit" class="btn btn-primary">Lưu Danh Mục</button>
+    </form>
+</div>
+{% endblock %}

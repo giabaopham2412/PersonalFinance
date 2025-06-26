@@ -1,9 +1,9 @@
-<link href="/static/add_expense/style.css" rel="stylesheet">
+<link href="/static/css/add_expense.css" rel="stylesheet">
 {% extends 'finance/base_generic.html' %}
 
 {% block content %}
 <div class="container d-flex justify-content-center align-items-start mt-5">
-    <div class="card p-4" style="max-width: 600px; width: 100%;">
+    <div class="card p-4">
         <h2 class="text-center mb-4">Add Expense</h2>
         <form method="post">
             {% csrf_token %}
@@ -33,6 +33,4 @@
         </form>
     </div>
 </div>
-
-{% endblock %}    
-
+{% endblock %}

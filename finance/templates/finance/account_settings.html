@@ -1,0 +1,45 @@
+<link href="/static/css/account_settings.css" rel="stylesheet">
+{% extends "finance/base_generic.html" %}
+{% block content %}
+  <div class="container mt-5">
+    <h2>Account Settings</h2>
+    {% if messages %}
+      <div id="messages">
+        {% for message in messages %}
+          <div class="alert alert-success" role="alert">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+    <form method="POST" enctype="multipart/form-data" id="account-settings-form">
+      {% csrf_token %}
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">User Information</h5>
+              {{ user_form.as_p }}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-body text-center">
+              <h5 class="card-title">Profile Information</h5>
+              <img src="{{ user.profile.image.url }}" alt="Profile Picture" class="img-thumbnail" id="profile-picture">
+              {{ profile_form.as_p }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary mt-3" id="update-button" onclick="handleSubmit(event)">Update</button>
+      </div>
+
+    </form>
+  </div>
+
+  <!-- Include account settings JavaScript -->
+  <script src="/static/js/account_settings.js"></script>
+{% endblock %}

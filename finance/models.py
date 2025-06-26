@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from datetime import date
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
+
 class Income(models.Model):
     SOURCE_CHOICES = [
         ('Salary', 'Lương'),
@@ -16,7 +17,7 @@ class Income(models.Model):
     source = models.CharField(max_length=100, choices=SOURCE_CHOICES, default='Other')
     date = models.DateField(default=date.today)
 
-    def str(self):
+    def __str__(self):
         return f"{self.source} - {self.amount}"
 
 class Expense(models.Model):
@@ -33,5 +34,17 @@ class Expense(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     date = models.DateField(default=date.today)
 
-    def str(self):
+    def __str__(self):
         return f"{self.category} - {self.amount}"
+    
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    age = models.IntegerField(null=True, blank=True)
+    occupation = models.CharField(max_length=100, null=True, blank=True)
+    image = models.ImageField(default='default.jpg', upload_to='img/profile_pics')
+
+    def __str__(self):
+        return f'{self.user.username} Profile'
+    
+
+

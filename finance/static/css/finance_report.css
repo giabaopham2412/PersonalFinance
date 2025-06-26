@@ -1,0 +1,70 @@
+
+    /* 🌟 Toàn bộ trang */
+    body {
+        background: linear-gradient(to right, #f8fafc, #e0f2fe); /* Nền gradient xanh nhạt */
+        font-family: 'Arial', sans-serif;
+    }
+
+    /* 🎨 Tiêu đề chính */
+    h2, h4, h5 {
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    /* 🔥 Bảng tổng thể */
+    table {
+        background: linear-gradient(to bottom, #ffffff, #f1f5f9); /* Nền bảng có độ sáng */
+        border-radius: 10px; /* Bo tròn bảng */
+        overflow: hidden; /* Giữ góc bo */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng */
+    }
+
+    /* 🟡 Header của bảng */
+    thead {
+        background: linear-gradient(to right, #60a5fa, #2563eb); /* Gradient xanh dương */
+        color: white;
+    }
+
+    /* 🏆 Hover từng hàng với hiệu ứng màu sắc ngẫu nhiên */
+    tbody tr {
+        transition: all 0.3s ease-in-out;
+    }
+
+    tbody tr:hover {
+        transform: scale(1.05); /* Phóng to nhẹ */
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2); /* Hiệu ứng nổi bật */
+        z-index: 10;
+        position: relative;
+        background: linear-gradient(to right, 
+            rgba(255, 99, 132, 0.2), 
+            rgba(54, 162, 235, 0.2), 
+            rgba(255, 206, 86, 0.2)
+        ); /* Gradient màu cầu vồng */
+    }
+
+    /* 🌈 Nút "Xóa" nổi bật */
+    .btn-delete {
+        background: linear-gradient(to right, #ef4444, #dc2626); /* Màu đỏ gradient */
+        color: white;
+        font-weight: bold;
+        border-radius: 30px;
+        padding: 8px 16px;
+        transition: all 0.3s ease-in-out;
+        display: inline-block;
+        text-align: center;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-delete:hover {
+        background: linear-gradient(to right, #b91c1c, #7f1d1d);
+        transform: scale(1.1);
+        box-shadow: 0px 4px 10px rgba(255, 0, 0, 0.3);
+    }
+
+    /* 💡 Biểu đồ ChartJS */
+    canvas {
+        background: white;
+        border-radius: 10px;
+        padding: 10px;
+        box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.1);
+    }

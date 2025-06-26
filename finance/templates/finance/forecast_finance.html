@@ -1,0 +1,62 @@
+{% extends 'finance/base_generic.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center">Dự Báo Tài Chính</h2>
+
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h4>Thông Tin Tài Chính</h4>
+            <p><strong>Tổng Thu Nhập:</strong> {{ total_income }} VND</p>
+            <p><strong>Tổng Chi Tiêu:</strong> {{ total_expense }} VND</p>
+            <p><strong>Dư:</strong> {{ balance }} VND</p>
+            <p><strong>Lời Khuyên:</strong> {{ advice }}</p>
+        </div>
+    </div>
+
+
+    <div class="row mt-4">
+        <div class="col-md-12 text-center">
+            <h4>Biểu Đồ Thu Nhập và Chi Tiêu Thực Tế</h4>
+            <canvas id="actualChart" width="800" height="400"></canvas>
+        </div>
+    </div>
+
+
+    <div class="row mt-4">
+        <div class="col-md-12 text-center">
+            <h4>Biểu Đồ Dự Báo Thu Nhập và Chi Tiêu (Dự Báo AI)</h4>
+            <canvas id="forecastChart" width="800" height="400"></canvas>
+        </div>
+    </div>
+
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h4>Kết Luận</h4>
+            <p>{{ conclusion }}</p>
+        </div>
+    </div>
+
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h4>Lời Khuyên Dự Báo</h4>
+            <p>{{ future_advice }}</p>
+        </div>
+    </div>
+</div>
+
+<!-- Hidden inputs for chart data -->
+<input type="hidden" id="months-data" value='{{ months|safe }}'>
+<input type="hidden" id="income-values-data" value='{{ income_values|safe }}'>
+<input type="hidden" id="expense-values-data" value='{{ expense_values|safe }}'>
+<input type="hidden" id="predicted-income-data" value='{{ predicted_income|safe }}'>
+<input type="hidden" id="predicted-expense-data" value='{{ predicted_expense|safe }}'>
+
+<!-- JavaScript Libraries -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="/static/js/forecast_finance.js?v=1.0.1"></script>
+
+{% endblock %}
