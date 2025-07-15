@@ -117,3 +117,4 @@ LOGIN_REDIRECT_URL = os.getenv('LOGIN_REDIRECT_URL', '/')
 
 MEDIA_URL = os.getenv('MEDIA_URL', '/media/')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

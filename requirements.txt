@@ -13,3 +13,4 @@ transformers
 torch==2.7.1
 google-cloud-speech
 gunicorn
+whitenoise
