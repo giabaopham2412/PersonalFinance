@@ -4,30 +4,30 @@
 {% block content %}
 <div class="container d-flex justify-content-center align-items-start mt-5">
     <div class="card p-4">
-        <h2 class="text-center mb-4">Add Expense</h2>
+        <h2 class="text-center mb-4">Thêm Chi Tiêu</h2>
         <form method="post">
             {% csrf_token %}
             <div class="mb-3 row">
-                <label for="id_category" class="col-sm-4 col-form-label">Category:</label>
+                <label for="id_category" class="col-sm-4 col-form-label">Danh Mục:</label>
                 <div class="col-sm-8">
                     {{ form.category }}
                 </div>
             </div>
             <div class="mb-3 row">
-                <label for="id_amount" class="col-sm-4 col-form-label">Amount (VND):</label>
+                <label for="id_amount" class="col-sm-4 col-form-label">Số Tiền (VND):</label>
                 <div class="col-sm-8">
                     {{ form.amount }}
                 </div>
             </div>
             <div class="mb-3 row">
-                <label for="id_date" class="col-sm-4 col-form-label">Date:</label>
+                <label for="id_date" class="col-sm-4 col-form-label">Ngày:</label>
                 <div class="col-sm-8">
                     {{ form.date }}
                 </div>
             </div>
             <div class="row">
                 <div class="col-sm-12">
-                    <button type="submit" class="btn btn-primary w-100">Add</button>
+                    <button type="submit" class="btn btn-primary w-100">Thêm</button>
                 </div>
             </div>
         </form>

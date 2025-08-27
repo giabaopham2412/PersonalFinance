@@ -1,21 +1,236 @@
 {% extends 'finance/base_generic.html' %}
 
 {% block content %}
-<div class="container">
-    <h1 class="mt-5">Chào mừng đến với Quản Lý Tài Chính Cá Nhân</h1>
-    <p class="lead">Quản lý tài chính cá nhân của bạn một cách dễ dàng với các chức năng thêm thu nhập, chi tiêu và báo cáo tài chính.</p>
-    <div class="row">
-        <div class="col-md-4">
-            <a href="{% url 'add_income' %}" class="btn btn-primary btn-lg btn-block">Thêm Thu Nhập</a>
+<style>
+    :root {
+        --primary-color: #8A2BE2;
+        --secondary-color: #4B0082;
+        --accent-color: #9370DB;
+        --text-color: #333;
+        --light-color: #f8f9fa;
+    }
+
+    .hero-section {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        padding: 80px 0;
+        text-align: center;
+        margin-bottom: 40px;
+        border-radius: 10px;
+    }
+
+    .hero-title {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+
+    .hero-subtitle {
+        font-size: 1.5rem;
+        margin-bottom: 30px;
+    }
+
+    .section {
+        padding: 60px 0;
+        margin-bottom: 30px;
+    }
+
+    .section-title {
+        font-size: 2.5rem;
+        color: var(--primary-color);
+        margin-bottom: 40px;
+        text-align: center;
+        font-weight: 600;
+    }
+
+    .feature-card {
+        background-color: white;
+        border-radius: 10px;
+        padding: 30px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+        height: 100%;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+    }
+
+    .feature-icon {
+        font-size: 3rem;
+        color: var(--primary-color);
+        margin-bottom: 20px;
+    }
+
+    .feature-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 15px;
+        color: var(--secondary-color);
+    }
+
+    .cta-section {
+        background-color: var(--accent-color);
+        color: white;
+        padding: 50px 0;
+        text-align: center;
+        border-radius: 10px;
+        margin-bottom: 30px;
+    }
+
+    .about-img {
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+</style>
+
+<!-- Hero Section -->
+<div class="hero-section">
+    <div class="container">
+        <h1 class="hero-title">Trợ Lý Tài Chính Cá Nhân</h1>
+        <p class="hero-subtitle">Giải pháp quản lý tài chính thông minh cho cuộc sống hiện đại</p>
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-3 mb-3">
+                <a href="{% url 'add_income' %}" class="btn btn-light btn-lg w-100">Thêm Thu Nhập</a>
+            </div>
+            <div class="col-md-3 mb-3">
+                <a href="{% url 'add_expense' %}" class="btn btn-light btn-lg w-100">Thêm Chi Tiêu</a>
+            </div>
+            <div class="col-md-3 mb-3">
+                <a href="{% url 'financial_report' %}" class="btn btn-light btn-lg w-100">Xem Báo Cáo</a>
+            </div>
+            <div class="col-md-3 mb-3">
+                <a href="{% url 'forecast_finance' %}" class="btn btn-light btn-lg w-100">Dự Báo Tài Chính</a>
+            </div>
         </div>
-        <div class="col-md-4">
-            <a href="{% url 'add_expense' %}" class="btn btn-secondary btn-lg btn-block">Thêm Chi Tiêu</a>
+    </div>
+</div>
+
+<!-- About Section -->
+<div class="section bg-light">
+    <div class="container">
+        <h2 class="section-title">Về Chúng Tôi</h2>
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <img src="/static/images/finance-management.jpg" alt="Quản lý tài chính" class="img-fluid about-img" onerror="this.src='https://via.placeholder.com/600x400?text=Quản+Lý+Tài+Chính'">
+            </div>
+            <div class="col-lg-6">
+                <h3 class="mb-4">Tại Sao Chúng Tôi Phát Triển Ứng Dụng Này?</h3>
+                <p class="lead">Trong thời đại số hóa ngày nay, việc quản lý tài chính cá nhân hiệu quả là chìa khóa để đạt được sự tự do và an toàn tài chính.</p>
+                <p>Chúng tôi nhận thấy nhiều người gặp khó khăn trong việc theo dõi thu chi, lập kế hoạch tài chính và đưa ra quyết định đầu tư thông minh. Đó là lý do chúng tôi phát triển <strong>Trợ Lý Tài Chính Cá Nhân</strong> - một nền tảng toàn diện giúp bạn kiểm soát hoàn toàn tình hình tài chính của mình.</p>
+                <p>Với sự kết hợp giữa công nghệ trí tuệ nhân tạo và các nguyên tắc quản lý tài chính vững chắc, chúng tôi cung cấp một giải pháp đơn giản nhưng mạnh mẽ, giúp bạn đạt được mục tiêu tài chính cá nhân.</p>
+            </div>
         </div>
-        <div class="col-md-4">
-            <a href="{% url 'financial_report' %}" class="btn btn-success btn-lg btn-block">Xem Báo Cáo Tài Chính</a>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="section">
+    <div class="container">
+        <h2 class="section-title">Tính Năng Nổi Bật</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="feature-card">
+                    <div class="feature-icon">💰</div>
+                    <h3 class="feature-title">Quản Lý Thu Nhập</h3>
+                    <p>Dễ dàng theo dõi mọi nguồn thu nhập của bạn. Phân loại và phân tích để hiểu rõ hơn về cấu trúc tài chính của bạn.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="feature-card">
+                    <div class="feature-icon">📉</div>
+                    <h3 class="feature-title">Theo Dõi Chi Tiêu</h3>
+                    <p>Ghi lại và phân loại mọi khoản chi tiêu. Xác định các lĩnh vực bạn có thể tiết kiệm và tối ưu hóa ngân sách của mình.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 class="feature-title">Báo Cáo Tài Chính</h3>
+                    <p>Xem báo cáo chi tiết về tình hình tài chính của bạn với các biểu đồ trực quan và số liệu thống kê hữu ích.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="feature-card">
+                    <div class="feature-icon">🔮</div>
+                    <h3 class="feature-title">Dự Báo Tài Chính</h3>
+                    <p>Sử dụng trí tuệ nhân tạo để dự đoán xu hướng tài chính trong tương lai và lập kế hoạch tài chính dài hạn.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3 class="feature-title">Trợ Lý AI</h3>
+                    <p>Tương tác với trợ lý ảo thông minh để nhận lời khuyên tài chính cá nhân hóa và trả lời các câu hỏi của bạn.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="feature-card">
+                    <div class="feature-icon">🎤</div>
+                    <h3 class="feature-title">Điều Khiển Bằng Giọng Nói</h3>
+                    <p>Sử dụng công nghệ nhận dạng giọng nói để thêm thu nhập, chi tiêu và tương tác với ứng dụng một cách dễ dàng.</p>
+                </div>
+            </div>
         </div>
-        <div class="col-md-4 mt-3">
-            <a href="{% url 'forecast_finance' %}" class="btn btn-warning btn-lg btn-block">Dự Báo Tài Chính</a>
+    </div>
+</div>
+
+<!-- How It Works Section -->
+<div class="section bg-light">
+    <div class="container">
+        <h2 class="section-title">Cách Thức Hoạt Động</h2>
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h4 class="card-title">1. Đăng Ký Tài Khoản</h4>
+                        <p class="card-text">Tạo tài khoản cá nhân để bắt đầu hành trình quản lý tài chính của bạn. Quá trình này chỉ mất vài phút và hoàn toàn miễn phí.</p>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h4 class="card-title">2. Nhập Dữ Liệu Tài Chính</h4>
+                        <p class="card-text">Thêm thông tin về thu nhập và chi tiêu của bạn. Bạn có thể nhập thủ công hoặc sử dụng tính năng nhận dạng giọng nói tiên tiến của chúng tôi.</p>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h4 class="card-title">3. Phân Tích Và Lập Kế Hoạch</h4>
+                        <p class="card-text">Hệ thống của chúng tôi sẽ phân tích dữ liệu tài chính của bạn và cung cấp báo cáo chi tiết, dự báo và đề xuất để cải thiện tình hình tài chính của bạn.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">4. Tối Ưu Hóa Và Phát Triển</h4>
+                        <p class="card-text">Sử dụng thông tin và lời khuyên từ trợ lý AI của chúng tôi để tối ưu hóa chi tiêu, tăng thu nhập và đạt được mục tiêu tài chính của bạn.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Call to Action Section -->
+<div class="cta-section">
+    <div class="container">
+        <h2 class="mb-4">Sẵn Sàng Kiểm Soát Tài Chính Của Bạn?</h2>
+        <p class="lead mb-4">Hãy bắt đầu hành trình hướng tới sự tự do tài chính ngay hôm nay!</p>
+        <div class="row justify-content-center">
+            <div class="col-md-3 mb-3">
+                <a href="{% url 'add_income' %}" class="btn btn-light btn-lg w-100">Thêm Thu Nhập</a>
+            </div>
+            <div class="col-md-3 mb-3">
+                <a href="{% url 'add_expense' %}" class="btn btn-light btn-lg w-100">Thêm Chi Tiêu</a>
+            </div>
+            <div class="col-md-3 mb-3">
+                <a href="{% url 'financial_report' %}" class="btn btn-light btn-lg w-100">Xem Báo Cáo</a>
+            </div>
+            <div class="col-md-3 mb-3">
+                <a href="{% url 'forecast_finance' %}" class="btn btn-light btn-lg w-100">Dự Báo Tài Chính</a>
+            </div>
         </div>
     </div>
 </div>

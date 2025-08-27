@@ -17,44 +17,44 @@
                     <a class="nav-link" href="{% url 'home' %}">
 
                         <span class="fs-4"></span>
-                        <span class="ms-2 fw-bold">Finance Management</span>
+                        <span class="ms-2 fw-bold">Quản Lý Tài Chính</span>
                     </a>
                 </div>
                 <!-- User Info -->
                 <div class="user-info">
-                    <img src="{{ user.profile.image.url }}" alt="User Profile Picture" class="rounded-circle" id="navbar-profile-picture">
+                    <img src="{{ user.profile.image.url }}" alt="Ảnh Hồ Sơ Người Dùng" class="rounded-circle" id="navbar-profile-picture">
                     <h5>{{ user.username }}</h5>
                     <p>{{ user.email }}</p>
                     <p>{{ user.profile.occupation }}</p>
                     <p>{{ user.profile.age }} tuổi</p>
-                    <a href="{% url 'account_settings' %}">Manage Account</a>
+                    <a href="{% url 'account_settings' %}">Quản Lý Tài Khoản</a>
                 </div>
 
                 <!-- Menu -->
                 <ul class="navbar-nav">
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'add_income' %}">
-                            <span>💰</span> Add Income
+                            <span>💰</span> Thêm Thu Nhập
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'add_expense' %}">
-                            <span>📉</span> Add Expense
+                            <span>📉</span> Thêm Chi Tiêu
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'financial_report' %}">
-                            <span>📊</span> Financial Report
+                            <span>📊</span> Báo Cáo Tài Chính
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'forecast_finance' %}">
-                            <span>🔮</span> Financial Forecasting
+                            <span>🔮</span> Dự Báo Tài Chính
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'account_settings' %}">
-                            <span>📌</span> Personal Account
+                            <span>📌</span> Tài Khoản Cá Nhân
                         </a>
                     </li>
                 </ul>
@@ -71,10 +71,10 @@
                     </form>
                 {% else %}
                     <a class="nav-link" href="{% url 'login' %}">
-                        <span>🔑</span> Login
+                        <span>🔑</span> Đăng Nhập
                     </a>
                     <a class="nav-link" href="{% url 'register' %}">
-                        <span>📝</span> Register
+                        <span>📝</span> Đăng Ký
                     </a>
                 {% endif %}
             </div>
