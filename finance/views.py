@@ -29,6 +29,7 @@ from django.http import JsonResponse
 import json
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
+from django.contrib.auth.models import User
 
 import google.generativeai as genai
 import base64
@@ -329,6 +330,36 @@ def delete_expense(request, expense_id):
 
 def user_login(request):
     if request.method == 'POST':
+        # Kiểm tra xem người dùng có đồng ý tạo tài khoản không
+        create_account = request.POST.get('create_account')
+
+        # Nếu không đồng ý tạo tài khoản (checkbox không được tích), tạo tài khoản khách ngay lập tức
+        if not create_account:
+            # Tạo tài khoản khách tạm thời
+            try:
+                # Tạo username ngẫu nhiên cho khách
+                import random
+                import string
+                random_suffix = ''.join(random.choices(string.ascii_lowercase + string.digits, k=8))
+                guest_username = f"guest_{random_suffix}"
+                guest_password = ''.join(random.choices(string.ascii_letters + string.digits, k=12))
+                guest_email = f"{guest_username}@guest.com"
+
+                # Tạo tài khoản khách
+                guest_user = User.objects.create_user(
+                    username=guest_username,
+                    email=guest_email,
+                    password=guest_password
+                )
+
+                # Đăng nhập với tài khoản khách
+                login(request, guest_user)
+                messages.success(request, 'Bạn đã đăng nhập với tài khoản khách tạm thời.')
+                return redirect('home')
+            except Exception as e:
+                messages.error(request, f'Không thể tạo tài khoản khách: {str(e)}')
+
+        # Nếu đồng ý tạo tài khoản (checkbox được tích), tiến hành xác thực hoặc tạo tài khoản mới
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
             username = form.cleaned_data['username']
@@ -337,11 +368,60 @@ def user_login(request):
             if user is not None:
                 login(request, user)
                 return redirect('home')  # Sau khi đăng nhập thành công, chuyển hướng về trang home
+            else:
+                # Tạo tài khoản mới với thông tin đăng nhập
+                try:
+                    # Tạo một email ngẫu nhiên dựa trên username
+                    email = f"{username}@example.com"
+                    # Tạo user mới
+                    user = User.objects.create_user(username=username, email=email, password=password)
+                    # Đăng nhập với tài khoản mới
+                    login(request, user)
+                    messages.success(request, f'Tài khoản {username} đã được tạo thành công!')
+                    return redirect('home')
+                except Exception as e:
+                    messages.error(request, f'Không thể tạo tài khoản: {str(e)}')
+        else:
+            # Chuyển hướng đến trang đăng ký nếu form không hợp lệ nhưng đã đồng ý tạo tài khoản
+            if create_account:
+                return redirect('register')
     else:
         form = AuthenticationForm()
 
     return render(request, 'registration/login.html', {'form': form})
 
+
+@csrf_exempt
+def create_guest_account(request):
+    if request.method == 'POST':
+        try:
+            # Tạo username ngẫu nhiên cho khách
+            import random
+            import string
+            random_suffix = ''.join(random.choices(string.ascii_lowercase + string.digits, k=8))
+            guest_username = f"guest_{random_suffix}"
+            guest_password = ''.join(random.choices(string.ascii_letters + string.digits, k=12))
+            guest_email = f"{guest_username}@guest.com"
+
+            # Tạo tài khoản khách
+            guest_user = User.objects.create_user(
+                username=guest_username,
+                email=guest_email,
+                password=guest_password
+            )
+
+            # Return the guest credentials
+            return JsonResponse({
+                'success': True,
+                'username': guest_username,
+                'password': guest_password
+            })
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'error': str(e)
+            }, status=500)
+    return JsonResponse({'success': False, 'error': 'Method not allowed'}, status=405)
 
 @login_required
 def account_settings(request):
@@ -434,7 +514,7 @@ load_dotenv('.env.local')
 # Load environment variables
 
 HF_API_TOKEN = os.getenv("HF_API_TOKEN")
-HF_API_URL = "https://api-inference.huggingface.co/models/HuggingFaceH4/zephyr-7b-beta"
+HF_API_URL = "https://api-inference.huggingface.co/models/clementzhao/TinyLlama-1.1B-Chat-v1"
 
 def generate_simple_response(user_input, financial_data, profile):
     return JsonResponse({

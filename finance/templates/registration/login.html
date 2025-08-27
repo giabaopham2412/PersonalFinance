@@ -1,24 +1,73 @@
+<link href="/static/css/login.css" rel="stylesheet">
 {% extends 'finance/base_generic.html' %}
-
+{% load custom_filters %}
 {% block content %}
-<div class="container d-flex justify-content-center align-items-center min-vh-100">
-    <div class="card p-4" style="width: 400px;">
-        <h2 class="text-center">Log In</h2>
-        <form method="post" class="mt-4">
-            {% csrf_token %}
-            <div class="form-group mb-3">
-                <label for="id_username" class="form-label">Username</label>
-                {{ form.username }}
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h2>Đăng Nhập</h2>
+        </div>
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="{{ form.username.id_for_label }}">Tên đăng nhập</label>
+                    {{ form.username|add_class:"form-control" }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.password.id_for_label }}">Mật khẩu</label>
+                    {{ form.password|add_class:"form-control" }}
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="create_account" name="create_account" checked>
+                    <label for="create_account">Đồng ý đăng nhập và tạo tài khoản</label>
+                </div>
+                <button type="submit">Đăng Nhập</button>
+            </form>
+            <div class="text-center mt-3">
+                <a href="{% url 'register' %}">Đăng ký</a>
             </div>
-            <div class="form-group mb-3">
-                <label for="id_password" class="form-label">Password</label>
-                {{ form.password }}
-            </div>
-            <button type="submit" class="btn btn-primary w-100 mt-4">Log In</button>
-        </form>
-        <div class="text-center mt-3">
-            <a href="{% url 'register' %}">Sign up</a>
         </div>
     </div>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const checkbox = document.getElementById('create_account');
+    const form = document.querySelector('form');
+    const usernameField = document.getElementById('{{ form.username.id_for_label }}');
+    const passwordField = document.getElementById('{{ form.password.id_for_label }}');
+
+    // Add event listener to the checkbox
+    checkbox.addEventListener('change', function() {
+        if (!this.checked) {
+            // If checkbox is unchecked, create a guest account via AJAX
+            fetch('{% url "create_guest_account" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                },
+                body: JSON.stringify({})
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Fill in the username and password fields with the guest credentials
+                    usernameField.value = data.username;
+                    passwordField.value = data.password;
+
+                    // Automatically submit the form
+                    form.submit();
+                } else {
+                    alert('Error creating guest account: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error creating guest account. Please try again.');
+            });
+        }
+    });
+});
+</script>
 {% endblock %}

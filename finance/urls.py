@@ -20,4 +20,5 @@ urlpatterns = [
     path('process_voice_command/', views.process_voice_command, name='process_voice_command'),
     path('speech_to_text/', views.speech_to_text, name='speech_to_text'),
     path('chat_health_check/', views.chat_health_check, name='chat_health_check'),
+    path('create_guest_account/', views.create_guest_account, name='create_guest_account'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
